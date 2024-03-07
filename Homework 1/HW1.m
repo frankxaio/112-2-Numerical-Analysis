@@ -21,14 +21,16 @@ fprintf('T_sort is %.3f sec.\n', ts);
 tic;
 % =========================== %
 % input your code here and replace the sort function.
-s2 = sort(din);
+mysort = MySort();
+s2 = mysort.BucketSort(din);
+
 % =========================== %
 ty = toc;
 fprintf('T_yours is %.3f sec.\n', ty);
 speedup = ts/ty;
-fprintf('The time speedup is %.4f\n', speedup);
+fprintf('The time speedup is %.4f percent\n', speedup*100);
 
-corr = sum(s1~=s2);
+corr = sum(s1~=s2); % ~= 左右兩邊不等於回傳 1
 if corr==0
     fprintf('Answer is correct!!\n');
 else
