@@ -9,7 +9,10 @@ clc;
 
 % load data;
 N = 5*10^7;
-din = randperm(N);
+% N = 5*10;
+din = randperm(N); % 產生不重複的整數
+% din = rand(N); 
+% din = [8 3 2 1 7 4 6 5];
 
 tic;
 s1 = sort(din);
@@ -17,18 +20,21 @@ ts = toc;
 fprintf('===================================\n');
 fprintf('T_sort is %.3f sec.\n', ts);
 
-
-tic;
-% =========================== %
-% input your code here and replace the sort function.
 mysort = MySort();
+tic;
 s2 = mysort.BucketSort(din);
+ty1 = toc;
 
-% =========================== %
-ty = toc;
-fprintf('T_yours is %.3f sec.\n', ty);
-speedup = ts/ty;
-fprintf('The time speedup is %.4f percent\n', speedup*100);
+tic
+s3 = mysort.Homework(din);
+ty2 = toc;
+
+fprintf('T_BucketSort is %.3f sec.\n', ty1);
+fprintf('T_Homework is %.3f sec.\n', ty2);
+speedup_BucketSort = ty1/ts;
+speedup_Homework = ty2/ts;
+fprintf('The time speedup is %.4f\n', speedup_BucketSort);
+fprintf('The time speedup is %.4f\n', speedup_Homework);
 
 corr = sum(s1~=s2); % ~= 左右兩邊不等於回傳 1
 if corr==0
