@@ -129,7 +129,9 @@ classdef MySort
     
             % Find min and max elements of x
             n = length(x);
-            [minx, maxx] = obj.minmax(x,n);
+            minx = min(x);
+            maxx = max(x);
+            % meanx = mean(x);
     
             % Insert elements into m equal width buckets, each containing a doubly
             % linked list
@@ -151,7 +153,7 @@ classdef MySort
             end
     
             % Bucket sort
-            sx = zeros(size(x)); % sorted array
+            sx = ones(size(x)); % sorted array
             kk = 0;
             for j = 1:m
                 % Check if jth bucket is nonempty
@@ -189,46 +191,6 @@ classdef MySort
     
             end
     
-            function [min, max] = minmax(obj, x,n)
-            % Efficient algorithm for finding the min AND max elements of an array
-    
-            % Initialize
-            if ~mod(n,2)
-                % n is even
-                if (x(2) > x(1))
-                    min = x(1);
-                    max = x(2);
-                else
-                    min = x(2);
-                    max = x(1);
-                end
-                i = 3;
-            else
-                % n is odd
-                min = x(1);
-                max = x(1);
-                i = 2;
-            end
-    
-            % Process elements in pairs
-            while (i < n)
-                if (x(i + 1) > x(i))
-                    mini = x(i);
-                    maxi = x(i + 1);
-                else
-                    mini = x(i + 1);
-                    maxi = x(i);
-                end
-                if (mini < min)
-                    min = mini;
-                end
-                if (maxi > max)
-                    max = maxi;
-                end
-                i = i + 2;
-            end
-    
-            end
     
 
         function sx = Homework(obj, x)

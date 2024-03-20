@@ -9,10 +9,8 @@ clc;
 
 % load data;
 N = 5*10^7;
-% N = 5*10;
 din = randperm(N); % 產生不重複的整數
-% din = rand(N); 
-% din = [8 3 2 1 7 4 6 5];
+
 
 tic;
 s1 = sort(din);
@@ -38,7 +36,15 @@ fprintf('The time speedup is %.4f\n', speedup_Homework);
 
 corr = sum(s1~=s2); % ~= 左右兩邊不等於回傳 1
 if corr==0
-    fprintf('Answer is correct!!\n');
+    fprintf('Bucket Sort is correct!!\n');
+else
+    fprintf('Answer is NOT correct!!\n');
+end
+fprintf('===================================\n');
+
+corr = sum(s1~=s3); % ~= 左右兩邊不等於回傳 1
+if corr==0
+    fprintf('Homework Sort is correct!!\n');
 else
     fprintf('Answer is NOT correct!!\n');
 end
