@@ -21,14 +21,16 @@ function r_peak_indices = DetectPeaks(ecg_signal, fs)
     threshold = max(smoothed_signal) * 0.015;  % 設定幅值閾值
     [~, r_peak_indices] = findpeaks(smoothed_signal, 'MinPeakHeight', threshold, 'MinPeakDistance', fs);
 
-    % figure
-    % plot(ecg_signal);
+    % figure;
     % hold on;
+    % plot(ecg102, 'k--');
+    % plot(ecg_signal, 'b');
     % % plot(reconstructed_coefficients);
-    % plot(smoothed_signal);
+    % plot(smoethed_signal);
+    % xlim([1,1000]);
     % xlabel('Samples');
     % ylabel('Amplitude');
-    % legend('ECG', 'Squared')
+    % legend('ECG100', 'ECGFlt', 'ECGWavlet')
     % title('ECG Signal with Detected R Peaks');
     % hold off;
 end

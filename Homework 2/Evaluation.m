@@ -28,3 +28,4 @@ function [sensitivity, postive_detection, detection_error, test] = Evaluation(go
     test = tp / (tp+fn+fp);
 
     fprintf("tp=%f, fn=%f, fp=%f\n", tp, fn, fp);
+end
