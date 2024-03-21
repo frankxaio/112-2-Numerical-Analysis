@@ -1,7 +1,7 @@
 function r_peak_indices = DetectPeaks(ecg_signal, fs)
 
 % 選擇小波基函數和分解尺度
-wavelet_name = 'sym4'; % 使用 Symlets 4 小波基函數
+wavelet_name = 'db30'; % 使用 db30 小波基函數
 decomposition_level = 5; % 分解尺度為 5
 
 % 對 ECG 訊號進行小波分解
