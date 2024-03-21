@@ -1,4 +1,4 @@
-function [sensitivity, postive_detection, detection_error, test] = Evaluation(goldindex, r_peak_indices, ecg100)
+function [r_peak_fp, r_peak_fn, sensitivity, postive_detection, detection_error, test] = Evaluation(goldindex, r_peak_indices, ecg100)
     Gold_expand = ExpandArray(goldindex);
     %% 找出 tp 
     isCorrect = ismember(Gold_expand, r_peak_indices); % 是否正確偵測到 r_peak
@@ -20,7 +20,9 @@ function [sensitivity, postive_detection, detection_error, test] = Evaluation(go
         
 
     %% FN 
-    fn = (length(goldindex) - length(r_peak_indices));
+    fn = find(~isCorrect_num); % 找出沒有正確偵測到的 r_peak_indices
+    r_peak_fn = fn; % 哪幾筆資料沒有正確預測存到 r_peak_fn
+    fn = length(fn);
 
     sensitivity = tp / (tp + fn);
     postive_detection = tp / (tp+ fp);

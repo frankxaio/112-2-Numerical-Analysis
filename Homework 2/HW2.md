@@ -4,8 +4,32 @@
 
 ## 資料處理
 
-### 1. 去除線性趨勢
+### 0. 觀察資料
 
+Goldindex 漏圈或是錯誤標註 R-peak。
+
+
+#### Goldindex100, 與 Goldindex102 均出現 648000 之後的 R-peak 無標註的問題
+
+![image](https://hackmd.io/_uploads/ByCKJLF0a.png)
+
+#### Goldindex102 出現大量資料錯誤標註 R-peak:
+
+出現錯誤的 index: 1,38, ..., 2172
+
+:::spoiler Goldindex102 第 1 筆出現錯誤的情形
+![image](https://hackmd.io/_uploads/HJ5paQFCp.png)
+:::
+
+:::spoiler Goldindex102 第 38 筆出現錯誤的情形
+![image](https://hackmd.io/_uploads/Hk-rRmKC6.png)
+:::
+
+:::spoiler Goldindex102 第 2172 筆出現錯誤的情形
+![image](https://hackmd.io/_uploads/BkjaeEFRT.png)
+:::
+
+### 1. 去除線性趨勢
 去除趨勢上升或下降: 使 `detrend()` 函數去除輸入信號的線性趨勢，去除信號中的緩慢上升或下降的趨勢。
 
 :::spoiler Detrend 前與 Detend 後
@@ -53,26 +77,28 @@ filtfilt() 進行正向和反向的濾波，達到零相位濾波的效果
     - 使用 `setdiff()` 從 one2len 中移除 common_values，得到 Gold_expand_ 陣列，除了標準答案（含誤差範圍）以外的值。
     - 使用 `ismember()` 函數檢查 Gold_expand_ 中的元素是否在 r_peak_indices 中，若存在，則代表發生假陽性，統計假陽性數量存到 fp
 
-3. 計算假陰性 (FN) 的數量: 假陰性的數量等於答案的數量減去檢測到的 R 波峰值的數量。
+3. 計算假陰性 (FN) 的數量: 加總 isCoorect 中出現 0 的次數。
 5. 帶入公式計算 sensitivity, positive detection, detection error 和 test。
+
 
 ## 結果
 
-![image](https://hackmd.io/_uploads/H1cDQtdC6.png)
+![image](https://hackmd.io/_uploads/SJ3r48tAT.png)
+
 
 ```ASCII
-ECG100: tp=2256.000000, fn=2.000000, fp=7.000000
+ECG100: tp=2261.000000, fn=4.000000, fp=9.000000
 ========================================
-sensitivity100: 0.999114
-positive_detection100: 0.996907
-detection_error100: 0.003974
-test100: 0.996026
+sensitivity100: 0.998234
+positive_detection100: 0.996035
+detection_error100: 0.005740
+test100: 0.994283
 ========================================
-ECG102: tp=2107.000000, fn=19.000000, fp=54.000000
+ECG102: tp=2109.000000, fn=71.000000, fp=70.000000
 ========================================
-sensitivity102: 0.991063
-positive_detection102: 0.975012
-detection_error102: 0.033486
-test102: 0.966514
+sensitivity102: 0.967431
+positive_detection102: 0.967875
+detection_error102: 0.064679
+test102: 0.937333
 ========================================
 ```
