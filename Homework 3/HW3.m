@@ -4,59 +4,130 @@
 % arctan_series_with_total_errors_plot(pi/13, 100)
 
 % mac : maclaurin series 
-x = pi/13;
-true_value = atan(x);
-n = 100;
-mac = arctan_series(x, n);
-mac_sum = zeros(1, n);
-for i = 1:n
-    mac_sum(i) = sum(mac(1:i));
-end
+% true_value = atan(x);
+% mac = arctan_series(x, n);
+% mac_sum = zeros(1, n);
+% for i = 1:n
+%     mac_sum(i) = sum(mac(1:i));
+% end
 
-%% et
+% %% et
 
-et = nan(1, n);
-for i = 1:n
-    et(i) = abs( (true_value - mac_sum(i))/ true_value ) * 100;
-    if et(i) < 0.0001
-        nanindex = i; 
-        break;
-    end
-end
+% et = nan(1, n);
+% for i = 1:n
+%     et(i) = abs( (true_value - mac_sum(i))/ true_value ) * 100;
+%     if et(i) < 0.0001
+%         nanindex = i; 
+%         break;
+%     end
+% end
 
-%% ea
+% %% ea
 
-ea = nan(1, nanindex-1);
-for i = 2:nanindex
-    if nanindex == 1
-        break;
-    end
-    ea(i-1) = abs(mac_sum(i) - mac_sum(i-1)) / mac_sum(i) * 100;
+% ea = nan(1, nanindex-1);
+% for i = 2:nanindex
+%     if nanindex == 1
+%         break;
+%     end
+%     ea(i-1) = abs(mac_sum(i) - mac_sum(i-1)) / mac_sum(i) * 100;
 
-end
+% end
 
 
 %% Plot 
 
+x = pi/23;
+n = 100;
+[et, ea, nanindex] = etea(x, n);
 term_et = 1:n;
-figure;
-subplot(1, 2, 1);
+subplot(3, 2, 1);
 loglog(term_et(1:i), et(1:i), 'b-o');
 xlabel('項次');
 ylabel('真實相對誤差 (%)');
-title('項次 vs. 真實相對誤差');
+title('\pi/23 項次 vs. 真實相對誤差');
 grid on;
 
 term_ea = 1:nanindex;
-subplot(1, 2, 2);
+subplot(3, 2, 2);
 loglog(term_ea(1:nanindex-1), ea(1:nanindex-1), 'r-o');
 xlabel('項次');
 ylabel('近似相對誤差 (%)');
-title('項次 vs. 近似相對誤差');
+title('\pi/23項次 vs. 近似相對誤差');
 grid on;
 
+x = pi/7;
+n = 100;
+[et, ea, nanindex] = etea(x, n);
+
+term_et = 1:n;
+subplot(3, 2, 3);
+loglog(term_et(1:i), et(1:i), 'b-o');
+xlabel('項次');
+ylabel('真實相對誤差 (%)');
+title('\pi/7項次 vs. 真實相對誤差');
+grid on;
+
+term_ea = 1:nanindex;
+subplot(3, 2, 4);
+loglog(term_ea(1:nanindex-1), ea(1:nanindex-1), 'r-o');
+xlabel('項次');
+ylabel('近似相對誤差 (%)');
+title('\pi/7項次 vs. 近似相對誤差');
+grid on;
+
+x = pi/13;
+n = 100;
+[et, ea, nanindex] = etea(x, n);
+term_et = 1:n;
+subplot(3, 2, 5);
+loglog(term_et(1:i), et(1:i), 'b-o');
+xlabel('項次');
+ylabel('真實相對誤差 (%)');
+title('\pi/13項次 vs. 真實相對誤差');
+grid on;
+
+term_ea = 1:nanindex;
+subplot(3, 2, 6);
+loglog(term_ea(1:nanindex-1), ea(1:nanindex-1), 'r-o');
+xlabel('項次');
+ylabel('近似相對誤差 (%)');
+title('\pi/7項次 vs. 近似相對誤差');
+grid on;
 %% truncation error 
 
-%% roundoff error 
+% 定義要展開的函數
+syms x;
+f = atan(x);
 
-%% plot 
+% 設定展開點和截斷階數
+x0 = 0;
+n = 5;
+
+% 計算泰勒級數展開式
+arctan_series = arctan_series_symbolic(x0, n);
+
+% 定義評估點
+x_eval = 1;
+
+% 設定步長範圍
+h_values = logspace(-5, 0, 100);
+
+% 初始化截斷誤差向量
+truncation_errors = zeros(size(h_values));
+
+% 計算不同步長下的截斷誤差
+for i = 1:length(h_values)
+    h = h_values(i);
+    xi = x0 + h;
+    true_value = subs(f, x, xi);
+    approx_value = subs(arctan_series, x, xi);
+    truncation_errors(i) = abs(true_value - approx_value);
+end
+
+% 繪製截斷誤差與步長的關係圖
+figure;
+loglog(h_values, truncation_errors, '-o');
+xlabel('Step size (h)');
+ylabel('Truncation error');
+title('Truncation error vs. Step size');
+grid on;
