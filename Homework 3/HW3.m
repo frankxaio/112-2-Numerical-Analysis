@@ -41,7 +41,7 @@ n = 100;
 [et, ea, nanindex] = etea(x, n);
 term_et = 1:n;
 subplot(3, 2, 1);
-loglog(term_et(1:i), et(1:i), 'b-o');
+loglog(term_et(1:nanindex-1), et(1:nanindex-1), 'b-o');
 xlabel('項次');
 ylabel('真實相對誤差 (%)');
 title('\pi/23 項次 vs. 真實相對誤差');
