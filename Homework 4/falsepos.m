@@ -24,9 +24,13 @@ if fl*fu > 0, error('在給定區間內函數值無符號變化'), end
 iter = 0;
 r_old = 0;
 ea = [];
+l_list = [];
+r_list = [];
 
 while (1)
     iter = iter + 1;
+    r_list = [r_list, r];
+    l_list = [l_list, l];
     
     r = u - fu*(u-l)/(fu-fl);
     fr = func(r);
