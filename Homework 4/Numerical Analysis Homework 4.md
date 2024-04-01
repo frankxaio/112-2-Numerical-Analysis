@@ -13,13 +13,31 @@
 
 以上方法都需要先找出一個包含根的區間，然後逐步縮小區間直到根被逼近。相較之下,開放法求根如牛頓法就不需要預先找出包含根的區間。
 
+## MyRoot
+
+```
+Homework 4 
+        ├─ bisect.m    
+        ├─ brent.m
+        ├─ falsepos.m  
+        ├─ HW4.m  
+        ├─ invQuadInterp.m   
+        ├─ linInterp.m 
+        ├─ Numerical Analysis Homework 4.md 
+        ├─ Numerical Analysis Homework 4.pdf 
+        ├─ secant.m
+```
+Main file: HW4.m
+Report: Numerical Analysis Homework 4
+
 ## $f(x) = x^{10}-1$
 
-![image](https://hackmd.io/_uploads/HylQpJ_J0.png)
 
 使用內建函數 `Solve` 找的根: -1.000000, 1.000000, -0.809017, 0.809017, -0.809017, 0.809017, -0.309017, -0.309017
 
 使用 Matlab 試著找出上下界 x 為 [0， 1.3] 之間找根，最大迭代次數為100，終止條件 es = 0.0001%。
+
+![image](https://hackmd.io/_uploads/HylQpJ_J0.png)
 
 ### False position method 
 
