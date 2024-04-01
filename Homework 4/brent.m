@@ -34,9 +34,9 @@ while (1)
     end
     
     tol = 2 * eps * abs(b) + es/2; m = (a-b)/2;
-    if (abs(m) <= tol) || (fb == 0)
-        root = b; break; 
-    end
+    % if (abs(m) <= tol) || (fb == 0)
+    %     root = b; break; 
+    % end
     
     if (abs(e) < tol) || (abs(fc) <= abs(fb))
         d = m; e = m;
@@ -68,7 +68,10 @@ while (1)
     
     if iter > 1
         ea(iter-1) = abs((b - r_list(iter-1)) / b) * 100;
-        if ea(iter-1) < es, root = b; break; end
+        if ea(iter-1) < es, root = b; 
+            % disp('已達到所需誤差');
+            break; 
+        end
     end
     
     if iter >= maxit, root = b; warning('已達到最大迭代次數'); break; end
