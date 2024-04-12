@@ -31,7 +31,7 @@ f = @(x) x^3 - 6*x^2 + 11*x - 6.1;
 x0 = 2.5; x1 = 3.5;  
 disp("Secant method");
 for i = 1:3
-    x_new = x1 - subs(f, x1)*(x1-x0)/(subs(f, x0)-subs(f, x1));
+    x_new = x1 - subs(f, x1)*(x0-x1)/(subs(f, x0)-subs(f, x1));
     x_new = double(x_new); % symbolic to value
     fprintf('Iteration %d, x = %.6f\n', i, x_new);
     x0 = x1; x1 = x_new; 
@@ -102,7 +102,7 @@ f = @(x) 7*sin(x)*exp(-x) - 1;
 x0 = 0.5; x1 = 0.4;  
 disp("Secant method");
 for i = 1:3
-    x_new = x1 - subs(f, x1)*(x1-x0)/(subs(f, x0)-subs(f, x1));
+    x_new = x1 - subs(f, x1)*(x0-x1)/(subs(f, x0)-subs(f, x1));
     x_new = double(x_new); % symbolic to value
     fprintf('Iteration %d, x = %.6f\n', i, x_new);
     x0 = x1; x1 = x_new; 
@@ -116,7 +116,7 @@ syms x
 f = @(x) 7*sin(x)*exp(-x) - 1;
 xi = 3.5; delta = 0.01;
 disp("Modified secant method");
-for i = 1:3 
+for i = 1:5 
     x = xi - delta*xi*subs(f, xi)/(subs(f, xi+delta*xi)-subs(f, xi));  
     x = double(x); % symbolic to value
     fprintf('Iteration %d, x = %.6f\n', i, x);
