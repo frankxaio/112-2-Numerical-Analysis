@@ -1,131 +1,109 @@
-clc, clear, close all; 
-start = tic; 
+function [total_time, BER] = communication_system(modulation_name, samples_per_bit, Rb, amp, freq, snr, Generator, shift, file_path)
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                         "System Properties"                         %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-modulation_name = 'QPSK'; 
-samples_per_bit = 40; % 每個 bit 的採樣點數
-Rb = 1000; % 每秒鐘傳輸1000 bit。
-amp = [1 0]; % BASK 的訊號振幅
-freq = 1000; % 載波頻率為 1kHz    
-snr = 5; % 信噪比為5dB
-Generator = [1 1 1; 1 0 1]; % 卷積編碼的生成矩陣,用於通道編碼
-shift = 1; % viterbi解碼器的移位值
-
+start = tic;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                      "Reading Text Data File"                       %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fprintf('Reading data: ');
 tic
-fprintf('Reading data: '); 
-file = fopen('Data/Hello_world.txt');
+file = fopen(file_path);
 text = fread(file, '*char')';
 fclose(file);
-toc 
-
+toc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                         "Source Statistics"                         %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-fprintf('Source statistics: '); 
-tic
-[unique_symbol, probability] = source_statistics(text); 
-toc 
-
+% fprintf('Source statistics: ');
+% tic
+[unique_symbol, probability] = source_statistics(text);
+% toc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                         "Huffman Encoding"                          %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-fprintf('Huffman encoding: '); 
-tic 
-code_word = huffman_encoding(probability); 
-toc 
-
+% fprintf('Huffman encoding: ');
+% tic
+code_word = huffman_encoding(probability);
+% toc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                         "Stream Generator"                          %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-tic
-fprintf('Stream generator: '); 
+% fprintf('Stream generator: ');
+% tic
 bit_stream = stream_generator(unique_symbol, code_word, text);
 input = bit_stream;
-toc 
-
+% toc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                          "Channel Coding"                           %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-tic
-fprintf('Channel coding: '); 
-
+% fprintf('Channel coding: ');
+% tic
 channel_coded = convolutional_coding(bit_stream, Generator);
-toc 
-
+% toc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                            "Modulation"                             %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-tic
-fprintf('Modulation: ');
-modulated = modulation(modulation_name, channel_coded, Rb, samples_per_bit, amp, freq); 
-toc 
-
+% fprintf('Modulation: ');
+% tic
+modulated = modulation(modulation_name, channel_coded, Rb, samples_per_bit, amp, freq);
+% toc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                              "Channel"                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-tic
-fprintf('Channel: ');
-received = awgn_channel(modulated, snr); 
-toc 
-
+% fprintf('Channel: ');
+% tic
+received = awgn_channel(modulated, snr);
+% toc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                           "Demodulation"                            %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-tic
-fprintf('Demodulation: ');
+% fprintf('Demodulation: ');
+% tic
 bit_stream = demodulation(modulation_name, received, Rb, samples_per_bit, amp, freq);
 toc
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                         "Channel Decoding"                          %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-tic
-fprintf('Channel decoding: ');
-bit_stream = viterbi_decoder(bit_stream, Generator, shift); 
-output = bit_stream; 
-toc
-
+% fprintf('Channel decoding: ');
+% tic
+bit_stream = viterbi_decoder(bit_stream, Generator, shift);
+output = bit_stream;
+% toc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                         "Huffman Decoding"                          %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-tic
-fprintf('Huffman decoding: ');
-decoded_msg = huffman_decoding(unique_symbol, code_word, bit_stream); 
-toc 
-
+% fprintf('Huffman decoding: ');
+% tic
+decoded_msg = huffman_decoding(unique_symbol, code_word, bit_stream);
+% toc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                    "Writting the Received Data"                     %%%
+%%%                    "Writing the Received Data"                     %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-tic
-fprintf('Writing data: ');
+% fprintf('Writing data: ');
+% tic
 f = fopen('Data/received.txt','w+');
 fprintf(f, decoded_msg);
 fclose(f);
-toc
-
+% toc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                     "Time & Error Calculation"                      %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-fprintf('Total execution time: ');
-toc(start); 
+total_time = toc(start);
+% fprintf('Total execution time: %f seconds\n', total_time);
 
-Error = sum(abs(input - output)); 
-disp(['Total Bit Error: ' num2str(Error)]); 
+Error = sum(abs(input - output));
+BER = Error / length(input);
+% disp(['Bit Error Rate: ' num2str(BER)]);
+
+end

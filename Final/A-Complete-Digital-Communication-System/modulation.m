@@ -77,16 +77,16 @@ switch modulation_name
         line_code = repelem(line_code, length(t));
         
         % Plot the QPSK constellation diagram
-        figure;
-        phi_vals = 2 * pi * (0:M-1) / M;
-        x = cos(phi_vals);
-        y = sin(phi_vals);
-        compass(x, y, 'r');  % 使用紅色繪製相位點
-        hold on;
-        plot(x, y, 'ro', 'MarkerFaceColor', 'r');  % 在相位點上繪製紅色圓圈
-        title('QPSK Constellation Diagram');
-        xlabel('In-phase');
-        ylabel('Quadrature  ');
+        % figure;
+        % phi_vals = 2 * pi * (0:M-1) / M;
+        % x = cos(phi_vals);
+        % y = sin(phi_vals);
+        % compass(x, y, 'r');  % 使用紅色繪製相位點
+        % hold on;
+        % plot(x, y, 'ro', 'MarkerFaceColor', 'r');  % 在相位點上繪製紅色圓圈
+        % title('QPSK Constellation Diagram');
+        % xlabel('In-phase');
+        % ylabel('Quadrature  ');
         
         
         % Upsample line_code to match the length of modulated signal
@@ -97,39 +97,39 @@ switch modulation_name
         return;
 end
 
-% Plot the signals
-figure;
-subplot(3,1,1);
-plot(line_code);
-title('Line-Coded Signal (Line Code(channel coded signal))', 'Interpreter', 'latex');
-xlabel('Samples');
-ylabel('Amplitude');
+% % Plot the signals
+% figure;
+% subplot(3,1,1);
+% plot(line_code);
+% title('Line-Coded Signal (Line Code(channel coded signal))', 'Interpreter', 'latex');
+% xlabel('Samples');
+% ylabel('Amplitude');
 
-subplot(3,1,2);
-plot(carrier);
-title('Carrier Signal $c(t)$', 'Interpreter', 'latex');
-xlabel('Samples');
-ylabel('Amplitude');
+% subplot(3,1,2);
+% plot(carrier);
+% title('Carrier Signal $c(t)$', 'Interpreter', 'latex');
+% xlabel('Samples');
+% ylabel('Amplitude');
 
-subplot(3,1,3);
-plot(modulated);
-title('Modulated Signal $s(t)$', 'Interpreter', 'latex');
-xlabel('Samples');
-ylabel('Amplitude');
+% subplot(3,1,3);
+% plot(modulated);
+% title('Modulated Signal $s(t)$', 'Interpreter', 'latex');
+% xlabel('Samples');
+% ylabel('Amplitude');
 
-% Plot the power spectrum for each modulation scheme
-figure;
-subplot(3,1,1);
-plot_power_spectrum(modulated, Fs, 'BASK');
-title('Power Spectrum of BASK Modulated Signal');
+% % Plot the power spectrum for each modulation scheme
+% figure;
+% subplot(3,1,1);
+% plot_power_spectrum(modulated, Fs, 'BASK');
+% title('Power Spectrum of BASK Modulated Signal');
 
-subplot(3,1,2);
-plot_power_spectrum(modulated, Fs, 'BPSK');
-title('Power Spectrum of BPSK Modulated Signal');
+% subplot(3,1,2);
+% plot_power_spectrum(modulated, Fs, 'BPSK');
+% title('Power Spectrum of BPSK Modulated Signal');
 
-subplot(3,1,3);
-plot_power_spectrum(modulated, Fs, 'QPSK');
-title('Power Spectrum of QPSK Modulated Signal');
+% subplot(3,1,3);
+% plot_power_spectrum(modulated, Fs, 'QPSK');
+% title('Power Spectrum of QPSK Modulated Signal');
 
 
 

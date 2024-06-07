@@ -167,6 +167,17 @@ Copy codeG = [1 1 1;
 
 `length(Hello world) = 11`
 
+| Char(descending) | Count | Huffman |
+| ---------------- | ----- | ------- |
+| l                | 3     | 10      |
+| o                | 2     | 01      |
+| "space"          | 1     | 001     |
+| H                | 1     | 000     |
+| d                | 1     | 1111    |
+| e                | 1     | 1110    |
+| r                | 1     | 1101    |
+| w                | 1     | 1100    |
+
 | Char(descending) | Count | Frequency               | Huffman |
 | ---------------- | ----- | ----------------------- | ------- |
 | l                | 3     | $\frac{3}{11}=0.2727$   | 10      |
